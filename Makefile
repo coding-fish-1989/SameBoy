@@ -601,7 +601,7 @@ $(BIN)/SDL/Palettes: Misc/Palettes
 
 $(OBJ)/%.2bpp: %.png
 	-@$(MKDIR) -p $(dir $@)
-	$(RGBGFX) $(if $(filter $(shell echo 'print __RGBDS_MAJOR__ || (!__RGBDS_MAJOR__ && __RGBDS_MINOR__ > 5)' | $(RGBASM) -), $$0), -h -u, -Z -u -c embedded) -o $@ $<
+	$(RGBGFX) $(if $(filter $(shell echo 'print __RGBDS_MAJOR__ || (!__RGBDS_MAJOR__ && __RGBDS_MINOR__ > 5)' | $(RGBASM) -), $$0), -h -u, -Z) -o $@ $<
 
 $(OBJ)/BootROMs/SameBoyLogo.pb12: $(OBJ)/BootROMs/SameBoyLogo.2bpp $(PB12_COMPRESS)
 	-@$(MKDIR) -p $(dir $@)

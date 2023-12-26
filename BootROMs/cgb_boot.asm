@@ -86,25 +86,20 @@ ELSE
     ld c, $10
 
 .tilemapRowLoop
-
-    call .write_with_palette
-
-    ; Repeat the 3 tiles common between E and B. This saves 27 bytes after
-    ; compression, with a cost of 17 bytes of code.
     push af
-    sub $20
-    sub $3
-    jr nc, .notspecial
-    add $20
-    call .write_with_palette
-    dec c
-.notspecial
+    ; Switch to second VRAM Bank
+    ld a, 1
+    ldh [$4F], a
+    ld [hl], 8
+    ; Switch to back first VRAM Bank
+    xor a
+    ldh [$4F], a
     pop af
-
+    ldi [hl], a
     add d ; d = 3 for SameBoy logo, d = 1 for Nintendo logo
     dec c
     jr nz, .tilemapRowLoop
-    sub 44
+    sub 47
     push de
     ld de, $10
     add hl, de
@@ -120,19 +115,6 @@ ELSE
     ld l, $a7
     ld bc, $0107
     jr .tilemapRowLoop
-
-.write_with_palette
-    push af
-    ; Switch to second VRAM Bank
-    ld a, 1
-    ldh [rVBK], a
-    ld [hl], 8
-    ; Switch to back first VRAM Bank
-    xor a
-    ldh [rVBK], a
-    pop af
-    ldi [hl], a
-    ret
 .endTilemap
 ENDC
 
